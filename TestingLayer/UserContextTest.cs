@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataLayer;
 using BusinessLayer;
+using Microsoft.EntityFrameworkCore;
 
 namespace TestingLayer
 {
@@ -51,7 +52,62 @@ namespace TestingLayer
         [Test]
         public void CreateTest()
         {
+            int previousCount = SetupFixure.dbContext.Users.Count();
 
+            User newUser = new User("New", "Who", 24, "Mhm", "123456789", "user@gmail.com");
+
+            context.Create(newUser);
+
+            int after = SetupFixure.dbContext.Users.Count();
+
+            Assert.IsTrue(previousCount + 1 == after, "Create doesn't work!");
+        }
+
+
+        [Test]
+        public void Delete()
+        {
+            int previousCount = SetupFixure.dbContext.Users.Count();
+
+            context.Delete(user.Id);
+
+            int after = SetupFixure.dbContext.Users.Count();
+
+            Assert.IsTrue(previousCount - 1 == after, "Delete doesn't work!");
+        }
+
+        [Test]
+        public void Read()
+        {
+            User read = context.Read(user.Id);
+
+            Assert.AreEqual(user, read, "Read doesnt work.");
+        }
+
+        [Test]
+        public void ReadNavigational()
+        {
+            User read = context.Read(user.Id, true);
+
+            Assert.That(read.Friends.Contains(friend1) && read.Interests.Contains(interest1) , "Navigational properties dont work.");
+        }
+
+        [Test]
+        public void ReadAll()
+        {
+            List<User> readUsers = (List<User>)context.ReadAll();
+
+            Assert.That(readUsers.Count != 0, "ReadAll doesnt work.");
+        }
+
+        [Test]
+        public void Update()
+        {
+            User readUser = context.Read(user.Id);
+            readUser.UserName = "New username";
+            context.Update(readUser);
+
+            Assert.AreEqual(readUser, context.Read(user.Id), "Update doenst work!");
         }
     }
 }

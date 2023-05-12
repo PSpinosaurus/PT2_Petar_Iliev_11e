@@ -19,7 +19,10 @@ namespace DataLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-40HMVT5;Database=Test2Db;Trusted_Connection=True;TrustServerCertificate=Yes;");
+            if (!optionsBuilder.IsConfigured) 
+            {
+                optionsBuilder.UseSqlServer("Server=DESKTOP-40HMVT5;Database=Test2Db;Trusted_Connection=True;TrustServerCertificate=Yes;");
+            }
             base.OnConfiguring(optionsBuilder);
         }
 

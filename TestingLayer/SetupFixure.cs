@@ -2,6 +2,7 @@ using NUnit.Framework;
 using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TestingLayer
 {
