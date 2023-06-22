@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DataLayer
 {
-    internal class InterestsContext : IDb<Interest, int>
+    public class InterestsContext : IDb<Interest, int>
     {
 
         private readonly Test2DbContext dbContext;
@@ -24,7 +24,7 @@ namespace DataLayer
         {
             try
             {
-                HashSet<User> usersFromDb = new HashSet<User>();
+                List<User> usersFromDb = new List<User>();
                 foreach (User user in item.Users)
                 {
                     User userFromDb = dbContext.Users.Find(user.Id);
@@ -128,7 +128,7 @@ namespace DataLayer
 
                 if (useNavigationalProperties)
                 {
-                    HashSet<User> usersFromDb = new HashSet<User>();
+                    List<User> usersFromDb = new List<User>();
                     foreach (User user in item.Users)
                     {
                         User userFromDb = dbContext.Users.Find(user.Id);
@@ -152,7 +152,7 @@ namespace DataLayer
                     }
                 }
 
-                dbContext.Interests.Add(item);
+                dbContext.Interests.Update(item);
                 dbContext.SaveChanges();
 
             }

@@ -16,7 +16,7 @@ namespace BusinessLayer
         [MaxLength(20, ErrorMessage = "Name must be between 1 and 20 symbols.")]
         public string Name { get; set; }
 
-        public HashSet<User> Users { get; set; } = new HashSet<User> {};
+        public List<User> Users { get; set; } = new List<User> {};
         public Category Category { get; set; }
 
         public Interest()

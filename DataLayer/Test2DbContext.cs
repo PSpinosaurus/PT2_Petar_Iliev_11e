@@ -28,6 +28,14 @@ namespace DataLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<SetFriends>().HasKey(x => new { x.FriendId, x.SubFriendId });
+            modelBuilder.Entity<User>()
+            .HasMany(e => e.Friends)
+            .WithMany(e => e.FriendOf)
+            .UsingEntity<SetFriends>(
+                e => e.HasOne<User>().WithMany().HasForeignKey(e => e.FriendId),
+                e => e.HasOne<User>().WithMany().HasForeignKey(e => e.SubFriendId));
+
             base.OnModelCreating(modelBuilder);
         }
 

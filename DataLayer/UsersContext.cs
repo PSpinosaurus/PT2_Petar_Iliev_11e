@@ -23,7 +23,7 @@ namespace DataLayer
         {
             try
             {
-                HashSet<User> friendsFromDb = new HashSet<User>();
+                List<User> friendsFromDb = new List<User>();
                 foreach (User friend in item.Friends) 
                 { 
                     User friendFromDb = dbContext.Users.Find(friend.Id);
@@ -39,7 +39,23 @@ namespace DataLayer
 
                 item.Friends = friendsFromDb;
 
-                HashSet<Interest> interestsFromDb = new HashSet<Interest>();
+                List<User> friendOfFromDb = new List<User>();
+                foreach (User friend in item.FriendOf)
+                {
+                    User friendFromDb = dbContext.Users.Find(friend.Id);
+                    if (friendFromDb != null)
+                    {
+                        friendOfFromDb.Add(friendFromDb);
+                    }
+                    else
+                    {
+                        friendOfFromDb.Add(friend);
+                    }
+                }
+
+                item.FriendOf = friendOfFromDb;
+
+                List<Interest> interestsFromDb = new List<Interest>();
 
                 foreach (Interest interest in item.Interests)
                 {
@@ -141,7 +157,7 @@ namespace DataLayer
 
                 if (useNavigationalProperties)
                 {
-                    HashSet<User> friendsFromDb = new HashSet<User>();
+                    List<User> friendsFromDb = new List<User>();
                     foreach (User friend in item.Friends)
                     {
                         User friendFromDb = dbContext.Users.Find(friend.Id);
@@ -157,7 +173,7 @@ namespace DataLayer
 
                     userFromDb.Friends = friendsFromDb;
 
-                    HashSet<Interest> interestsFromDb = new HashSet<Interest>();
+                    List<Interest> interestsFromDb = new List<Interest>();
 
                     foreach (Interest interest in item.Interests)
                     {
@@ -173,6 +189,22 @@ namespace DataLayer
                     }
 
                     userFromDb.Interests = interestsFromDb;
+
+                    List<User> friendOfFromDb = new List<User>();
+                    foreach (User friend in item.FriendOf)
+                    {
+                        User friendFromDb = dbContext.Users.Find(friend.Id);
+                        if (friendFromDb != null)
+                        {
+                            friendOfFromDb.Add(friendFromDb);
+                        }
+                        else
+                        {
+                            friendOfFromDb.Add(friend);
+                        }
+                    }
+
+                    userFromDb.FriendOf = friendOfFromDb;
                 }
                 
                 dbContext.Users.Update(userFromDb);

@@ -32,9 +32,10 @@ namespace BusinessLayer
         [MaxLength(20, ErrorMessage = "Email must be between 1 and 20 symbols.")]
         public string Email { get; set; }
 
-        public HashSet<User> Friends { get; set; } = new HashSet<User> { };
+        public List<User> Friends { get; set; } = new List<User> { };
+        public List<User> FriendOf { get; set; } = new List<User> { };
 
-        public HashSet<Interest> Interests { get; set; } = new HashSet<Interest> { };
+        public List<Interest> Interests { get; set; } = new List<Interest> { };
 
         public User()
         {

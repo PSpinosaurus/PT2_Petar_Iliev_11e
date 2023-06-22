@@ -4,14 +4,16 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(Test2DbContext))]
-    partial class Test2DbContextModelSnapshot : ModelSnapshot
+    [Migration("20230619225444_More than 1 friend")]
+    partial class Morethan1friend
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,21 +60,6 @@ namespace DataLayer.Migrations
                     b.ToTable("Interests");
                 });
 
-            modelBuilder.Entity("BusinessLayer.SetFriends", b =>
-                {
-                    b.Property<int>("FriendId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubFriendId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FriendId", "SubFriendId");
-
-                    b.HasIndex("SubFriendId");
-
-                    b.ToTable("SetFriends");
-                });
-
             modelBuilder.Entity("BusinessLayer.User", b =>
                 {
                     b.Property<int>("Id")
@@ -106,6 +93,9 @@ namespace DataLayer.Migrations
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -114,6 +104,8 @@ namespace DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Users");
                 });
@@ -142,26 +134,15 @@ namespace DataLayer.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("BusinessLayer.SetFriends", b =>
-                {
-                    b.HasOne("BusinessLayer.User", null)
-                        .WithMany()
-                        .HasForeignKey("FriendId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.HasOne("BusinessLayer.User", null)
-                        .WithMany()
-                        .HasForeignKey("SubFriendId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BusinessLayer.User", b =>
                 {
                     b.HasOne("BusinessLayer.Category", null)
                         .WithMany("Users")
                         .HasForeignKey("CategoryId");
+
+                    b.HasOne("BusinessLayer.User", null)
+                        .WithMany("Friends")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("InterestUser", b =>
@@ -184,6 +165,11 @@ namespace DataLayer.Migrations
                     b.Navigation("Interests");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("BusinessLayer.User", b =>
+                {
+                    b.Navigation("Friends");
                 });
 #pragma warning restore 612, 618
         }
